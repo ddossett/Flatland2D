@@ -1,0 +1,25 @@
+## Ideas for Flatland 2D ##
+
+* You are the square from flatland.
+* Your ultimate goal is to make people believe in the 3rd dimension.
+Do this by doing simple quests for them.
+* Escape from prison at start, evading guards.
+* Maybe have the sphere break you out but explain that he will be punished and can't help again.
+Like the ancients in stargate.
+* Guards should have a visible vision cone.
+* Guards in town put you back in prison (think LBA).
+* Once a certain number of quests completed in an area you do one for a main character who gives you a key/something to move to the next (upper class) area.
+* Only have 3 areas with slightly different textures, but have different shapes populating them.
+* Small number of people that will call guards if you say something wrong?
+* Have an irregular shape ask you to fetch a disguise from a dealer.
+* An irregular shape in an alley being helped by a blind regular.
+* Have signs for your arrest that you can view, it's always just a line...
+* Have the main priest at the end be a closet chromatist? Overthrow him in a cutscene?
+* Small inventory to view.
+* Text boxes.
+* "Attend to your configuration...oops, sorry!"
+* Women need to yell and wiggle when moving.
+* Stats? Are they useful for convincing? Maybe do funny useless stats and abilities that flatlanders can't/won't perform e.g. jump, symmetry, xp
+* "Why is the floor coloured if we can't see it?" "What floor?" - m'aliq the liar type character that is sort of aware of the 4th wall/3rd dimension.
+* Eating is secret and can't be seen by the player (no mouths).
+* Different eye sprites so can have 'annoyed eyes' + blinking.
