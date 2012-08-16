@@ -1,16 +1,15 @@
 # Main screen and game loop config settings
-import player
-import objects
 import math
+import pygame
+import config.player as player
+import config.objects as objects
+import config.tiles as tiles
 
-TILEPOWER = 3
-NUMXTILES = 16
-NUMYTILES = 16
-TILESIZE = objects.PixelSize(int(player.HEROSIZE.w+math.pow(player.HEROSIZE.w,1./TILEPOWER)), int(player.HEROSIZE.h+math.pow(player.HEROSIZE.h,1./TILEPOWER)))
-SCREENSIZE = objects.PixelSize(int(TILESIZE.w*NUMXTILES), int(TILESIZE.h*NUMYTILES))
+SCREENSIZE = objects.PixelSize(tiles.TILESIZE.w*tiles.NUMXTILES, tiles.TILESIZE.h*tiles.NUMYTILES)
 COLOUR_WHITE = objects.rgb(255,255,255)
 COLOUR_BLACK = objects.rgb(0,0,0)
 TITLE = "Flatland 2D" 
 MAXFPS = 150
 SPRITEPATH = "data/sprites"
 TILEPATH = "data/map"
+MOVECMDS = {pygame.K_UP,pygame.K_RIGHT,pygame.K_DOWN,pygame.K_LEFT}

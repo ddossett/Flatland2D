@@ -6,18 +6,19 @@ import config.main as cfg
 import config.player as cfgPlayer
 import config.objects as objects
 import config.levels as cfgLevels
+import config.tiles as cfgTiles
 import classes.gamescreen as gamescreen
 import classes.gamemap as gamemap
-
-sys.path.append("config")
-sys.path.append("classes")
+import classes.player as player
 
 # Setup some pygame stuff here. Also callable class objects here to save
 # time in the main game loop
 pygame.init()
-hero_surf = pygame.image.load(os.path.join(cfg.SPRITEPATH,cfgPlayer.HEROIMAGE))
+
+hero = player.Player()
 clock = pygame.time.Clock()
 screen = gamescreen.GameScreen()
+
 tilemap = gamemap.Map()
 tilemap.levelmap = cfgLevels.level1
 tilemap.LoadSurfaces()
@@ -31,11 +32,12 @@ def main():
             if evtType == pygame.QUIT: RUNNING = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE: RUNNING = False
+                if event.key in cfg.MOVECMDS:
+                    hero.Move(event.key)
                 else: pass
             else: continue
         screen.BlitMap(tilemap)
-        hero_rect = hero_surf.get_rect()
-        screen.screen.blit(hero_surf, hero_rect)
+        screen.screen.blit(hero.surf, hero.rect)
         pygame.display.flip()
     pygame.quit()
 
