@@ -34,10 +34,11 @@ def main():
                 if event.key == pygame.K_ESCAPE: RUNNING = False
                 if event.key in cfg.MOVECMDS:
                     hero.Move(event.key)
+                    screen.Move(event.key)
                 else: pass
             else: continue
         screen.BlitMap(tilemap)
-        screen.screen.blit(hero.surf, hero.rect)
+        screen.BlitPlayer(hero)
         pygame.display.flip()
     pygame.quit()
 
