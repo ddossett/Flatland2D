@@ -17,12 +17,16 @@ class Player(object):
             pass
         elif keydown == pygame.K_DOWN:
             self.surf = pygame.transform.rotate( self.orig_surf, -90 )
+            self.prev_move = keydown
         elif keydown == pygame.K_RIGHT:
             self.surf = self.orig_surf
+            self.prev_move = keydown
         elif keydown == pygame.K_LEFT:
             self.surf = pygame.transform.rotate( self.orig_surf, 180 )
+            self.prev_move = keydown
         elif keydown == pygame.K_UP:
             self.surf = pygame.transform.rotate( self.orig_surf, 90 )
+            self.prev_move = keydown
         else:
-            print "Unknown direction passed: ",keydown
+            print "Unknown direction passed:",keydown
 
