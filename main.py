@@ -27,11 +27,10 @@ tilemap.LoadSurfaces()
 def main():
     RUNNING = True
     pressed_keys = []
-    time_keypress = 0
+    time_move = 0
     while RUNNING:
         milliseconds = clock.tick(cfg.MAXFPS)
-        if len(pressed_keys)>0:
-            time_keypress+=milliseconds
+        time_move+=milliseconds
         for event in pygame.event.get():
             evtType = event.type
             if evtType == pygame.QUIT: RUNNING = False
@@ -40,18 +39,22 @@ def main():
                 if event.key == pygame.K_ESCAPE: RUNNING = False
                 elif event.key in cfg.MOVECMDS:
                     if event.key==hero.prev_move:
-                        screen.Move(event.key)
-                    else: hero.Move(event.key)
+                        if time_move>cfg.MOVETIME:
+                            screen.Move(event.key)
+                            time_move=0
+                    else:
+                        hero.Move(event.key)
+                        time_move=0
                 else: pass
             elif evtType == pygame.KEYUP:
-                time_keypress=0
                 pressed_keys.remove(event.key)
             else: continue
 
         for key in pressed_keys:
-            if time_keypress>cfg.KEYDOWNTIME:
-                time_keypress=0
-                screen.Move(event.key)
+            if key in cfg.MOVECMDS:
+                if time_move>cfg.MOVETIME:
+                    screen.Move(event.key)
+                    time_move=0
 
         screen.BlitMap(tilemap)
         screen.BlitPlayer(hero)
