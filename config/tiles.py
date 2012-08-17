@@ -11,3 +11,4 @@ TILEDICT = {}
 TILEDICT["v"] = "tile-grass.png"
 TILEDICT["#"] = "tile-dirt.png"
 TILEDICT["~"] = "tile-water.png"
+UNWALKABLE = ["~"]

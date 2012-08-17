@@ -40,7 +40,7 @@ def main():
                 elif event.key in cfg.MOVECMDS:
                     if event.key==hero.prev_move:
                         if time_move>cfg.MOVETIME:
-                            screen.Move(event.key)
+                            screen.Move(event.key,tilemap)
                             time_move=0
                     else:
                         hero.Move(event.key)
@@ -53,7 +53,7 @@ def main():
         for key in pressed_keys:
             if key in cfg.MOVECMDS:
                 if time_move>cfg.MOVETIME:
-                    screen.Move(event.key)
+                    screen.Move(event.key,tilemap)
                     time_move=0
 
         screen.BlitMap(tilemap)
