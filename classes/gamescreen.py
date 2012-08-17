@@ -4,12 +4,14 @@ import config.objects as objects
 import config.tiles as cfgTiles
 
 class GameScreen(object):
-    def __init__(self):
+    def __init__(self,player,tilemap):
         self.screen = pygame.display.set_mode(cfg.SCREENSIZE)
         print cfg.SCREENSIZE
         pygame.display.set_caption(cfg.TITLE)
         self.camera_pos = objects.PixelPos(0,0)
         self.tile_pos = [0,0]
+        self.player = player
+        self.tilemap = tilemap
 
     def BlitMap(self,level):
         self.screen.fill(cfg.COLOUR_BLACK)
@@ -28,6 +30,7 @@ class GameScreen(object):
         return tuple([ (itup1+(scale*itup2)) for itup1, itup2 in zip(tuple1,tuple2) ])
 
     def Move(self,keydown,level):
+        move_pos = (0,0)
         if keydown == pygame.K_DOWN:
             move_pos = (0,1)
         elif keydown == pygame.K_RIGHT:
@@ -54,3 +57,8 @@ class GameScreen(object):
         y_diff = (cfgTiles.NUMYTILES-1)/2
         index = (x_diff+hero_pos[0],y_diff+hero_pos[1])
         return index
+
+    def update(self):
+        self.BlitMap(self.tilemap)
+        self.BlitPlayer(self.player)
+        pygame.display.flip()

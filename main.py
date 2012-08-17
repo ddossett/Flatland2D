@@ -16,13 +16,19 @@ import classes.player as player
 # time in the main game loop
 pygame.init()
 
+class GameState(object):
+    def __init__(self):
+        self.state = "stationary"
+        self.states = {"rotating","moving","stationary"}
+
 hero = player.Player()
 clock = pygame.time.Clock()
-screen = gamescreen.GameScreen()
 
 tilemap = gamemap.Map()
 tilemap.levelmap = cfgLevels.level1
 tilemap.LoadSurfaces()
+
+screen = gamescreen.GameScreen(hero, tilemap)
 
 def main():
     RUNNING = True
@@ -60,9 +66,7 @@ def main():
                     time_move=0
 
         hero.update()
-        screen.BlitMap(tilemap)
-        screen.BlitPlayer(hero)
-        pygame.display.flip()
+        screen.update()
     pygame.quit()
 
 if __name__ == "__main__":
