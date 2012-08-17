@@ -59,6 +59,7 @@ def main():
                     screen.Move(event.key,tilemap)
                     time_move=0
 
+        hero.update()
         screen.BlitMap(tilemap)
         screen.BlitPlayer(hero)
         pygame.display.flip()

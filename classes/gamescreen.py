@@ -22,7 +22,7 @@ class GameScreen(object):
                 self.screen.blit(tile_surface,tile_rect)
 
     def BlitPlayer(self,player):
-        self.screen.blit(player.surf, player.rect)
+        self.screen.blit(player.image, player.rect)
 
     def AddPositions(self,tuple1,tuple2,scale):
         return tuple([ (itup1+(scale*itup2)) for itup1, itup2 in zip(tuple1,tuple2) ])
