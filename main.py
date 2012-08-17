@@ -47,7 +47,10 @@ def main():
                         time_move=0
                 else: pass
             elif evtType == pygame.KEYUP:
-                pressed_keys.remove(event.key)
+                try:
+                    pressed_keys.remove(event.key)
+                except ValueError:
+                    pass
             else: continue
 
         for key in pressed_keys:

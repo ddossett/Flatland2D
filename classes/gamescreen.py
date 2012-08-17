@@ -41,9 +41,6 @@ class GameScreen(object):
         tile_pos = self.AddPositions( self.tile_pos, move_pos, 1)
         map_pos = self.HeroToScreenIndex(tile_pos)
         if level.levelmap[map_pos[1]][map_pos[0]] not in cfgTiles.UNWALKABLE:
-            print "tile_pos",tile_pos
-            print "map_pos",map_pos
-            print level.levelmap[map_pos[1]][map_pos[0]]
             self.tile_pos = tile_pos
         self.camera_pos = self.TileToPixel( self.tile_pos )
 
