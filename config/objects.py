@@ -5,3 +5,4 @@ from collections import namedtuple as ntuple
 rgb = ntuple('RGB', 'r g b')
 PixelSize = ntuple('PixelSize', 'w h')
 PixelPos = ntuple('PixelPos', 'x y')
+Coord = ntuple('Coord', 'x y')
