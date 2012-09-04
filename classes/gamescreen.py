@@ -2,50 +2,32 @@ import pygame
 import config.main as cfg
 import config.objects as objects
 import config.tiles as cfgTiles
+import utils
 
 class GameScreen(object):
-    def __init__(self,player,tilemap):
+    def __init__(self,player,level):
         self.screen = pygame.display.set_mode(cfg.SCREENSIZE)
         print cfg.SCREENSIZE
         pygame.display.set_caption(cfg.TITLE)
-        self.camera_pos = objects.PixelPos(0,0)
-        self.tile_pos = [0,0]
         self.player = player
-        self.tilemap = tilemap
+        self.level = level
+        self.camera_pos = utils.PlayerPosToCamera(player.current_pos)
 
-    def BlitMap(self,level):
+    def BlitMap(self):
         self.screen.fill(cfg.COLOUR_BLACK)
-        for y,row in enumerate(level.levelmap):
+        for y,row in enumerate(self.level.levelmap):
             for x,tilekey in enumerate(row):
-                tile_surface = level.required_surfaces[tilekey]
+                tile_surface = self.level.required_surfaces[tilekey]
                 tile_rect = pygame.Rect(0, 0, cfgTiles.TILESIZE.w, cfgTiles.TILESIZE.h)
-                tile_rect.left = x*cfgTiles.TILESIZE.w - self.camera_pos.x
-                tile_rect.top = y*cfgTiles.TILESIZE.h - self.camera_pos.y
+                tile_pos = utils.MultiplyTuples( (x,y), cfgTiles.TILESIZE )
+                tile_rect.topleft = utils.AddTuples( tile_pos, self.camera_pos )
                 self.screen.blit(tile_surface,tile_rect)
 
-    def BlitPlayer(self,player):
-        self.screen.blit(player.image, player.rect)
+    def BlitPlayer(self):
+        self.screen.blit(self.player.image, self.player.rect)
 
-    def AddPositions(self,tuple1,tuple2,scale):
-        return tuple([ (itup1+(scale*itup2)) for itup1, itup2 in zip(tuple1,tuple2) ])
-
-    def Move(self,keydown,level):
-        move_pos = (0,0)
-        if keydown == pygame.K_DOWN:
-            move_pos = (0,1)
-        elif keydown == pygame.K_RIGHT:
-            move_pos = (1,0)
-        elif keydown == pygame.K_LEFT:
-            move_pos = (-1,0)
-        elif keydown == pygame.K_UP:
-            move_pos = (0,-1)
-        else:
-            print "Unknown direction passed: ",keydown
-        tile_pos = self.AddPositions( self.tile_pos, move_pos, 1)
-        map_pos = self.HeroToScreenIndex(tile_pos)
-        if level.levelmap[map_pos[1]][map_pos[0]] not in cfgTiles.UNWALKABLE:
-            self.tile_pos = tile_pos
-        self.camera_pos = self.TileToPixel( self.tile_pos )
+    def Move(self):
+        self.camera_pos = utils.PlayerPosToCamera(self.player.current_pos)
 
     def TileToPixel(self,tile_pos):
         x = tile_pos[0]*cfgTiles.TILESIZE.w
@@ -59,6 +41,6 @@ class GameScreen(object):
         return index
 
     def update(self):
-        self.BlitMap(self.tilemap)
-        self.BlitPlayer(self.player)
+        self.BlitMap()
+        self.BlitPlayer()
         pygame.display.flip()

@@ -2,11 +2,13 @@ import os
 import pygame
 import config.main as cfg
 import config.tiles as cfgTiles
+import config.objects as objects
 
 class Map(object):
     def __init__(self):
         self.levelmap = []
         self.required_surfaces = {}
+        self.start_pos = objects.Coord(0,0)
     
     def LoadSurfaces(self):
         for key in self.required_surfaces.keys():
