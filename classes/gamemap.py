@@ -8,7 +8,7 @@ class Map(object):
     def __init__(self):
         self.levelmap = []
         self.required_surfaces = {}
-        self.start_pos = objects.Coord(0,0)
+        self.start_pos = objects.Coord(3,3)
     
     def LoadSurfaces(self):
         for key in self.required_surfaces.keys():

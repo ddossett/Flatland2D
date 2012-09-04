@@ -24,21 +24,26 @@ class Player(pygame.sprite.Sprite):
         self.current_pos = objects.Coord( *utils.ScaleTuple(level.start_pos,1.0) )
         self.target_pos = self.current_pos
 
+        self.velocity = objects.Coord(0.,0.)
+
     def Move(self,keydown,level):
-            print "old hero.current_pos =",self.current_pos
-            if keydown == pygame.K_DOWN:
-                self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(0.,1.)) )
-            elif keydown == pygame.K_RIGHT:
-                self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(1.,0.)) )
-            elif keydown == pygame.K_LEFT:
-                self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(-1.,0.)) )
-            elif keydown == pygame.K_UP:
-                self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(0.,-1.)) )
-            else: print "Unknown Direction Passed!"
-            if level.levelmap[int(self.target_pos.y)][int(self.target_pos.x)] in cfgTiles.UNWALKABLE:
-                self.target_pos = self.current_pos
-            elif self.target_pos.x<0. or self.target_pos.y<0.: self.target_pos = self.current_pos
-            self.prev_move = keydown
+        # Figure out which movement was sent 
+        if keydown == pygame.K_DOWN:
+            self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(0.,1.)) )
+        elif keydown == pygame.K_RIGHT:
+            self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(1.,0.)) )
+        elif keydown == pygame.K_LEFT:
+            self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(-1.,0.)) )
+        elif keydown == pygame.K_UP:
+            self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(0.,-1.)) )
+        else: print "Unknown Direction Passed!"
+        if level.levelmap[int(self.target_pos.y)][int(self.target_pos.x)] in cfgTiles.UNWALKABLE:
+            self.target_pos = self.current_pos
+        elif self.target_pos.x<0. or self.target_pos.y<0.: self.target_pos = self.current_pos
+        # Calculate the velocity to be used in the update() call
+        neg_current_pos = utils.ScaleTuple(self.current_pos, -1.)
+        self.velocity = objects.Coord( *utils.ScaleTuple( utils.AddTuples( neg_current_pos, self.target_pos ), 0.1 ) )
+        self.prev_move = keydown
 
     def Rotate(self,keydown):
         if keydown == pygame.K_DOWN:
@@ -57,13 +62,16 @@ class Player(pygame.sprite.Sprite):
                 self.current_angle -= cfgPlayer.ROTATESPEED
             elif self.target_angle>self.current_angle:
                 self.current_angle += cfgPlayer.ROTATESPEED
+            diff_angle = (self.target_angle-self.current_angle)%360
+            if diff_angle<5.: self.current_angle = self.target_angle
             self.image = pygame.transform.rotate( self.orig_surf, self.current_angle )
+
         elif self.target_pos != self.current_pos:
             neg_current_pos = utils.ScaleTuple(self.current_pos, -1.)
-            move_vec = utils.ScaleTuple( utils.AddTuples( neg_current_pos, self.target_pos ), 0.5 )
-            print "move_vec",move_vec
-            if abs(move_vec[0])<0.005 and abs(move_vec[1])<0.005:
+            diff = utils.AddTuples( neg_current_pos, self.target_pos )
+            if abs(diff[0])<0.005 and abs(diff[1])<0.005:
                 self.current_pos = self.target_pos
+                self.velocity = objects.Coord(0.,0.)
             else:
-                self.current_pos = objects.Coord( *utils.AddTuples( self.current_pos, move_vec ) )
+                self.current_pos = objects.Coord( *utils.AddTuples( self.current_pos, self.velocity ) )
         else: pass

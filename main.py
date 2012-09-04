@@ -44,11 +44,9 @@ def Moving(screen,hero):
     MOVING = True
     while MOVING:
         c.tick(100)
-        print "hero.target_pos =",hero.target_pos
         hero.update()
         screen.Move()
         screen.update()
-        print "new hero.current_pos =",hero.current_pos
         if hero.current_pos==hero.target_pos: MOVING = False
 
 def Rotating(screen,hero):
