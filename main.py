@@ -40,7 +40,6 @@ gamestate = GameState()
 clock = pygame.time.Clock()
 
 def Moving(screen,hero):
-    pygame.event.get()
     c = pygame.time.Clock()
     MOVING = True
     while MOVING:

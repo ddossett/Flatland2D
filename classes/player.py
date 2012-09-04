@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
             elif keydown == pygame.K_UP:
                 self.target_pos = objects.Coord( *utils.AddTuples(self.current_pos,(0.,-1.)) )
             else: print "Unknown Direction Passed!"
-            if level.levelmap[int(self.target_pos.x)][int(self.target_pos.y)] in cfgTiles.UNWALKABLE:
+            if level.levelmap[int(self.target_pos.y)][int(self.target_pos.x)] in cfgTiles.UNWALKABLE:
                 self.target_pos = self.current_pos
             elif self.target_pos.x<0. or self.target_pos.y<0.: self.target_pos = self.current_pos
             self.prev_move = keydown
