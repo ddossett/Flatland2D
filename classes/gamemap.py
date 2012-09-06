@@ -10,7 +10,7 @@ class Map(object):
     def __init__(self):
         self.levelmap = []
         self.required_images = {}
-        self.start_pos = objects.Coord(3.,3.)
+        self.start_pos = objects.Coord(10.,10.)
     
     def LoadImages(self):
         """We fill in the required_images set with the resized tiles. Only
@@ -30,7 +30,7 @@ class Map(object):
                 if not self.required_images.has_key(tilekey):
                     self.required_images[tilekey] = all_images[tilekey]
 
-    def MakeLevelImage(self):
+    def MakeBackgroundSurface(self):
         """To save time we create the base level background as a single
         image using the Image module. This can then be made into a single
         large surface and scrolled around. This saves time compared to 
@@ -47,5 +47,7 @@ class Map(object):
                 tile_pos = (x*cfgTiles.TILESIZE.w, y*cfgTiles.TILESIZE.h, (x+1)*cfgTiles.TILESIZE.w, (y+1)*cfgTiles.TILESIZE.h)
                 tile_image = self.required_images[tilekey]
                 self.levelImage.paste( tile_image, tile_pos )
-        self.levelImage.show()
+        self.levelSurface = pygame.image.frombuffer( self.levelImage.tostring(), self.levelImage.size, self.levelImage.mode )
+        self.levelRect = self.levelSurface.get_rect()
+        self.levelRect.topleft = utils.PlayerPosToCamera(self.start_pos)
  

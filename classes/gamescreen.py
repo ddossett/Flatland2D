@@ -15,13 +15,13 @@ class GameScreen(object):
 
     def BlitMap(self):
         self.screen.fill(cfg.COLOUR_BLACK)
-        for y,row in enumerate(self.level.levelmap):
-            for x,tilekey in enumerate(row):
-                tile_rect = pygame.Rect(0, 0, cfgTiles.TILESIZE.w, cfgTiles.TILESIZE.h)
-                tile_surface = self.level.required_surfaces[tilekey]
-                tile_pos = utils.MultiplyTuples( (x,y), cfgTiles.TILESIZE )
-                tile_rect.topleft = utils.AddTuples( tile_pos, self.camera_pos )
-                self.screen.blit(tile_surface,tile_rect)
+#        for y,row in enumerate(self.level.levelmap):
+#            for x,tilekey in enumerate(row):
+#                tile_rect = pygame.Rect(0, 0, cfgTiles.TILESIZE.w, cfgTiles.TILESIZE.h)
+#                tile_surface = self.level.required_surfaces[tilekey]
+#                tile_pos = utils.MultiplyTuples( (x,y), cfgTiles.TILESIZE )
+        self.level.levelRect.topleft = self.camera_pos
+        self.screen.blit( self.level.levelSurface, self.level.levelRect)
 
     def BlitPlayer(self):
         self.screen.blit(self.player.image, self.player.rect)
@@ -40,7 +40,9 @@ class GameScreen(object):
         index = (x_diff+hero_pos[0],y_diff+hero_pos[1])
         return index
 
-    def update(self):
+    def update(self,fps):
+        myFont = pygame.font.SysFont("None", 30)
         self.BlitMap()
         self.BlitPlayer()
+        self.screen.blit(myFont.render("FPS: %.2f" %fps, 0, (0, 0, 0)), (10,10))
         pygame.display.flip()

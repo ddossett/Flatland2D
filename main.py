@@ -28,41 +28,40 @@ pygame.init()
 
 tilemap = gamemap.Map()
 tilemap.levelmap = cfgLevels.level1
-tilemap.LoadSurfaces()
+tilemap.MakeBackgroundSurface()
 
 hero = player.Player(tilemap)
 
 screen = gamescreen.GameScreen(hero, tilemap)
 
-
 gamestate = GameState()
 
 clock = pygame.time.Clock()
 
-def Moving(screen,hero):
-    c = pygame.time.Clock()
+def Moving(clock,screen,hero):
     MOVING = True
     while MOVING:
-        c.tick(100)
+        clock.tick(100)
+        fps = clock.get_fps()
         hero.update()
         screen.Move()
-        screen.update()
+        screen.update(fps)
         if hero.current_pos==hero.target_pos: MOVING = False
 
-def Rotating(screen,hero):
-    c = pygame.time.Clock()
+def Rotating(clock,screen,hero):
     ROTATING = True
     while ROTATING:
-        c.tick(100)
+        clock.tick(100)
+        fps = clock.get_fps()
+        print fps
         hero.update()
-        screen.update()
+        screen.update(fps)
         if hero.current_angle==hero.target_angle: ROTATING = False
 
-def Paused():
-    c = pygame.time.Clock()
+def Paused(clock):
     PAUSED = True
     while PAUSED:
-        c.tick(10)
+        clock.tick(10)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
@@ -77,6 +76,7 @@ def main():
 
     while MAINGAME:
         milliseconds = clock.tick(cfg.MAXFPS)
+        fps = clock.get_fps()
         input_time+=milliseconds
         if input_time>=cfg.GAMESPEED:
             input_time=0
@@ -103,15 +103,15 @@ def main():
                 else: continue
     
             if gamestate.state=="stationary":
-                screen.update()
+                screen.update(fps)
             elif gamestate.state=="moving":
-                Moving(screen,hero)
+                Moving(clock,screen,hero)
                 gamestate.ChangeState("stationary")
             elif gamestate.state=="rotating":
-                Rotating(screen,hero)
+                Rotating(clock,screen,hero)
                 gamestate.ChangeState("stationary")
             elif gamestate.state=="paused":
-                Paused()
+                Paused(clock)
                 gamestate.ChangeState(gamestate.prev_state)
             else:
                 print "Entered an unknown state"
