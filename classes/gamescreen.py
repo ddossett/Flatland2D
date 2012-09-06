@@ -17,8 +17,8 @@ class GameScreen(object):
         self.screen.fill(cfg.COLOUR_BLACK)
         for y,row in enumerate(self.level.levelmap):
             for x,tilekey in enumerate(row):
-                tile_surface = self.level.required_surfaces[tilekey]
                 tile_rect = pygame.Rect(0, 0, cfgTiles.TILESIZE.w, cfgTiles.TILESIZE.h)
+                tile_surface = self.level.required_surfaces[tilekey]
                 tile_pos = utils.MultiplyTuples( (x,y), cfgTiles.TILESIZE )
                 tile_rect.topleft = utils.AddTuples( tile_pos, self.camera_pos )
                 self.screen.blit(tile_surface,tile_rect)
