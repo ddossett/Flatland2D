@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         elif self.target_pos.x<0. or self.target_pos.y<0.: self.target_pos = self.current_pos
         # Calculate the velocity to be used in the update() call
         neg_current_pos = utils.ScaleTuple(self.current_pos, -1.)
-        self.velocity = objects.Coord( *utils.ScaleTuple( utils.AddTuples( neg_current_pos, self.target_pos ), 0.1 ) )
+        self.velocity = objects.Coord( *utils.ScaleTuple( utils.AddTuples( neg_current_pos, self.target_pos ), cfgPlayer.MOVESPEED ) )
         self.prev_move = keydown
 
     def Rotate(self,keydown):
@@ -58,12 +58,9 @@ class Player(pygame.sprite.Sprite):
     
     def update(self):
         if self.target_angle != self.current_angle:
-            if self.target_angle<self.current_angle:
-                self.current_angle -= cfgPlayer.ROTATESPEED
-            elif self.target_angle>self.current_angle:
-                self.current_angle += cfgPlayer.ROTATESPEED
-            diff_angle = (self.target_angle-self.current_angle)%360
-            if diff_angle<5.: self.current_angle = self.target_angle
+            diff_angle = (self.target_angle-self.current_angle)
+            self.current_angle += cfgPlayer.ROTATESPEED
+            self.current_angle = self.current_angle%360
             self.image = pygame.transform.rotate( self.orig_surf, self.current_angle )
 
         elif self.target_pos != self.current_pos:

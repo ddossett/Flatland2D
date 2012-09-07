@@ -36,29 +36,55 @@ screen = gamescreen.GameScreen(hero, tilemap)
 
 gamestate = GameState()
 
-clock = pygame.time.Clock()
+# The clock is now global so that pygame doesn't get confused with
+# multiple clocks running. input_time is also global and lets
+# us control how fast we can input movement and actions independent
+# of the framerate. Similarly for game_time for animation.
 
-def Moving(clock,screen,hero):
+clock = pygame.time.Clock()
+input_time = 0
+game_time = 0
+
+def Moving(screen,hero):
+    global clock
+    global input_time
+    global game_time
     MOVING = True
     while MOVING:
-        clock.tick(100)
-        fps = clock.get_fps()
-        hero.update()
-        screen.Move()
-        screen.update(fps)
-        if hero.current_pos==hero.target_pos: MOVING = False
+        milliseconds = clock.tick(cfg.MAXFPS)
+        input_time += milliseconds
+        game_time += milliseconds
+        if game_time > cfg.MOVETIME:
+            game_time = 0
+            fps = clock.get_fps()
+            hero.update()
+            screen.Move()
+            screen.update(fps)
+            if hero.current_pos==hero.target_pos: MOVING = False
+    # We call event.get() to clear the buffer so that
+    # when we exit the Moving gamestate we don't
+    # have a huge list of events to be executed.
+    pygame.event.get()
 
-def Rotating(clock,screen,hero):
+def Rotating(screen,hero):
+    global clock
+    global input_time
+    global game_time
     ROTATING = True
     while ROTATING:
-        clock.tick(100)
-        fps = clock.get_fps()
-        print fps
-        hero.update()
-        screen.update(fps)
-        if hero.current_angle==hero.target_angle: ROTATING = False
+        milliseconds = clock.tick(cfg.MAXFPS)
+        input_time += milliseconds
+        game_time += milliseconds
+        if game_time > cfg.MOVETIME:
+            game_time = 0
+            fps = clock.get_fps()
+            hero.update()
+            screen.update(fps)
+            if hero.current_angle==hero.target_angle: ROTATING = False
+    pygame.event.get()
 
-def Paused(clock):
+def Paused():
+    global clock
     PAUSED = True
     while PAUSED:
         clock.tick(10)
@@ -70,16 +96,20 @@ def Paused(clock):
             else: continue
 
 def main():
+    global clock
+    global input_time
+    global game_time
     MAINGAME = True
     pressed_keys = []
-    input_time = 0
-
+    fps = 0
     while MAINGAME:
         milliseconds = clock.tick(cfg.MAXFPS)
-        fps = clock.get_fps()
         input_time+=milliseconds
-        if input_time>=cfg.GAMESPEED:
-            input_time=0
+        game_time+=milliseconds
+        if input_time>=cfg.INPUTTIME and game_time > cfg.MOVETIME:
+            fps = clock.get_fps()
+            input_time = 0
+            game_time = 0
             for event in pygame.event.get():
                 evtType = event.type
                 if evtType == pygame.QUIT: MAINGAME = False
@@ -105,13 +135,13 @@ def main():
             if gamestate.state=="stationary":
                 screen.update(fps)
             elif gamestate.state=="moving":
-                Moving(clock,screen,hero)
+                Moving(screen,hero)
                 gamestate.ChangeState("stationary")
             elif gamestate.state=="rotating":
-                Rotating(clock,screen,hero)
+                Rotating(screen,hero)
                 gamestate.ChangeState("stationary")
             elif gamestate.state=="paused":
-                Paused(clock)
+                Paused()
                 gamestate.ChangeState(gamestate.prev_state)
             else:
                 print "Entered an unknown state"

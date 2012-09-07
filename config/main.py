@@ -14,5 +14,5 @@ SPRITEPATH = "data/sprites"
 TILEPATH = "data/map"
 LEVELPATH = "data/map"
 MOVECMDS = {pygame.K_UP,pygame.K_RIGHT,pygame.K_DOWN,pygame.K_LEFT}
-MOVETIME = 250
-GAMESPEED = 250
+MOVETIME = 5
+INPUTTIME = 5

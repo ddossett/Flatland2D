@@ -6,7 +6,7 @@ import utils
 
 class GameScreen(object):
     def __init__(self,player,level):
-        self.screen = pygame.display.set_mode(cfg.SCREENSIZE)
+        self.screen = pygame.display.set_mode(cfg.SCREENSIZE,pygame.NOFRAME)
         print cfg.SCREENSIZE
         pygame.display.set_caption(cfg.TITLE)
         self.player = player
@@ -15,11 +15,6 @@ class GameScreen(object):
 
     def BlitMap(self):
         self.screen.fill(cfg.COLOUR_BLACK)
-#        for y,row in enumerate(self.level.levelmap):
-#            for x,tilekey in enumerate(row):
-#                tile_rect = pygame.Rect(0, 0, cfgTiles.TILESIZE.w, cfgTiles.TILESIZE.h)
-#                tile_surface = self.level.required_surfaces[tilekey]
-#                tile_pos = utils.MultiplyTuples( (x,y), cfgTiles.TILESIZE )
         self.level.levelRect.topleft = self.camera_pos
         self.screen.blit( self.level.levelSurface, self.level.levelRect)
 
