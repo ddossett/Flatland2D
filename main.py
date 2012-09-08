@@ -27,7 +27,7 @@ class GameState(object):
 pygame.init()
 
 tilemap = gamemap.Map()
-tilemap.levelmap = cfgLevels.level1
+tilemap.levelmap = cfgLevels.level2
 tilemap.MakeBackgroundSurface()
 
 hero = player.Player(tilemap)
