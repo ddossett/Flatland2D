@@ -3,5 +3,5 @@ import objects
 
 HEROSIZE = objects.PixelSize(32,32)
 HEROIMAGE = "a-square.png"
-ROTATESPEED = 30
+ROTATESPEED = 0.2
 MOVESPEED = 0.2
