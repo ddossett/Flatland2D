@@ -2,10 +2,7 @@
 # Mostly tuple mathematics atm. Switching to numpy arrays
 # might be an option in the future if this gets out of hand.
 
-import config.objects as objects
-import config.levels as cfgLevels
 import config.tiles as cfgTiles
-import config.main as cfg
 
 def AddToTuple(pos, val):
     return tuple( [ x+val for x in pos ] )

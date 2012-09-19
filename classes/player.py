@@ -93,11 +93,11 @@ class Player(pygame.sprite.Sprite):
         if self.rotating==True:
             self.current_angle += cfgPlayer.ROTATESPEED*self.rel_angle
             self.current_angle = self.current_angle%360
-            self.image = pygame.transform.rotate( self.orig_surf, self.current_angle )
             if abs(self.current_angle - self.target_angle)<10:
                 self.current_angle = self.target_angle
                 self.rel_angle = 0.
                 self.rotating=False
+            self.image = pygame.transform.rotate( self.orig_surf, self.current_angle )
 
         elif self.target_pos != self.current_pos:
             neg_current_pos = utils.ScaleTuple(self.current_pos, -1.)
