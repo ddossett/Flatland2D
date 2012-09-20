@@ -3,7 +3,7 @@ import os
 import config.main as cfg
 levels = []
 
-f = open(os.path.join(cfg.LEVELPATH,'level-002.lvl'),'r')
+f = open(os.path.join(cfg.paths["level"],'level-002.lvl'),'r')
 f_readlines = f.readlines()
 f.close()
 

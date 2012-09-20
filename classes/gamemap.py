@@ -2,15 +2,14 @@ import os
 import Image
 import pygame
 import config.main as cfg
-import config.tiles as cfgTiles
-import config.objects as objects
+import tuple_utils
 import utils
 
 class Map(object):
     def __init__(self):
         self.levelmap = []
         self.required_images = {}
-        self.start_pos = objects.Coord(10.,10.)
+        self.start_pos = cfg.Coord(10.,10.)
     
     def LoadImages(self):
         """We fill in the required_images set with the resized tiles. Only
@@ -20,10 +19,10 @@ class Map(object):
         for key in self.required_images.keys():
             del self.required_images[key]
         all_images = {}
-        for tilekey in cfgTiles.TILEDICT.keys():
-            image_file = cfgTiles.TILEDICT[tilekey]
-            tile_image = Image.open(os.path.join(cfg.TILEPATH,image_file))
-            tile_image = tile_image.resize( cfgTiles.TILESIZE )
+        for tilekey in cfg.tiles["dict"].keys():
+            image_file = cfg.tiles["dict"][tilekey]
+            tile_image = Image.open(os.path.join(cfg.paths["tile"],image_file))
+            tile_image = tile_image.resize( cfg.tiles["size"] )
             all_images[tilekey] = tile_image
         for tilekey_row in self.levelmap:
             for tilekey in tilekey_row:
@@ -40,11 +39,11 @@ class Map(object):
         # Set the size of the level image required and save memory for it
         numy = len(self.levelmap)
         numx = len(self.levelmap[0])
-        self.levelImage = Image.new("RGBA", utils.MultiplyTuples( cfgTiles.TILESIZE, (numx,numy)) )
+        self.levelImage = Image.new("RGBA", tuple_utils.MultiplyTuples( cfg.tiles["size"], (numx,numy)) )
 
         for y,row in enumerate(self.levelmap):
             for x,tilekey in enumerate(row):
-                tile_pos = (x*cfgTiles.TILESIZE.w, y*cfgTiles.TILESIZE.h, (x+1)*cfgTiles.TILESIZE.w, (y+1)*cfgTiles.TILESIZE.h)
+                tile_pos = (x*cfg.tiles["size"].w, y*cfg.tiles["size"].h, (x+1)*cfg.tiles["size"].w, (y+1)*cfg.tiles["size"].h)
                 tile_image = self.required_images[tilekey]
                 self.levelImage.paste( tile_image, tile_pos )
         self.levelSurface = pygame.image.frombuffer( self.levelImage.tostring(), self.levelImage.size, self.levelImage.mode )

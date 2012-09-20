@@ -4,10 +4,7 @@ import pygame
 
 # Get the setup constants from our config files
 import config.main as cfg
-import config.player as cfgPlayer
-import config.objects as objects
 import config.levels as cfgLevels
-import config.tiles as cfgTiles
 import classes.gamescreen as gamescreen
 import classes.gamemap as gamemap
 import classes.player as player
@@ -51,10 +48,10 @@ def Moving(screen,hero):
     global game_time
     MOVING = True
     while MOVING:
-        milliseconds = clock.tick(cfg.MAXFPS)
+        milliseconds = clock.tick(cfg.timing["fps"])
         input_time += milliseconds
         game_time += milliseconds
-        if game_time > cfg.MOVETIME:
+        if game_time > cfg.timing["move"]:
             game_time = 0
             fps = clock.get_fps()
             hero.update()
@@ -72,10 +69,10 @@ def Rotating(screen,hero):
     global game_time
     ROTATING = True
     while ROTATING:
-        milliseconds = clock.tick(cfg.MAXFPS)
+        milliseconds = clock.tick(cfg.timing["fps"])
         input_time += milliseconds
         game_time += milliseconds
-        if game_time > cfg.MOVETIME:
+        if game_time > cfg.timing["move"]:
             game_time = 0
             fps = clock.get_fps()
             hero.update()
@@ -103,10 +100,10 @@ def main():
     pressed_keys = []
     fps = 0
     while MAINGAME:
-        milliseconds = clock.tick(cfg.MAXFPS)
+        milliseconds = clock.tick(cfg.timing["fps"])
         input_time+=milliseconds
         game_time+=milliseconds
-        if input_time>=cfg.INPUTTIME and game_time > cfg.MOVETIME:
+        if input_time>=cfg.timing["input"] and game_time > cfg.timing["move"]:
             fps = clock.get_fps()
             input_time = 0
             game_time = 0
@@ -117,7 +114,7 @@ def main():
                     pressed_keys.append(event.key)
                     if event.key == pygame.K_ESCAPE: MAINGAME = False
                     elif event.key == pygame.K_p: gamestate.ChangeState("paused")
-                    elif event.key in cfg.MOVECMDS:
+                    elif event.key in cfg.game["move_cmds"]:
                         if event.key==hero.prev_move:
                             gamestate.ChangeState("moving")
                             hero.Move(event.key,tilemap)

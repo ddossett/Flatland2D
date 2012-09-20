@@ -1,23 +1,8 @@
 # Main screen and game loop config settings
 import math
-import pygame
-import config.player as player
-import config.objects as objects
-import config.tiles as tiles
-import utils
 from collections import namedtuple as ntuple
-
-SCREENSIZE = objects.PixelSize(tiles.TILESIZE.w*tiles.NUMXTILES, tiles.TILESIZE.h*tiles.NUMYTILES)
-COLOUR_WHITE = objects.rgb(255,255,255)
-COLOUR_BLACK = objects.rgb(0,0,0)
-TITLE = "Flatland 2D" 
-MAXFPS = 100
-SPRITEPATH = "data/sprites"
-TILEPATH = "data/map"
-LEVELPATH = "data/map"
-MOVECMDS = {pygame.K_UP,pygame.K_RIGHT,pygame.K_DOWN,pygame.K_LEFT}
-MOVETIME = 5
-INPUTTIME = 5
+import pygame
+import tuple_utils
 
 rgb = ntuple('RGB', 'r g b')
 PixelSize = ntuple('PixelSize', 'w h')
@@ -49,18 +34,18 @@ paths = {   "sprite":"data/sprites",
             "level":"data/map",
         }
 
-tiles = {   "size":PixelSize( *utils.AddToTuple(player["size"],(2*player["space"])) ),
-            "number":(15,15),
+tiles = {   "size":PixelSize( *tuple_utils.AddToTuple(player["size"],(2*player["space"])) ),
+            "number":Coord(15,15),
             "centre":PixelPos(0,0),
             "dict":{},
             "unwalkable":[]
         }
 
-tiles["centre"] = PixelSize( *utils.MultiplyTuples( utils.ScaleTuple( utils.AddToTuple(tiles["number"],-1), 0.5), tiles["size"] ) )
+tiles["centre"] = PixelSize( *tuple_utils.MultiplyTuples( tuple_utils.ScaleTuple( tuple_utils.AddToTuple(tiles["number"],-1), 0.5), tiles["size"] ) )
 tiles["dict"]["v"] = "tile-grass.png"
 tiles["dict"]["#"] = "tile-dirt.png"
 tiles["dict"]["~"] = "tile-water.png"
 tiles["unwalkable"].append("~")
 
-screen =    {   "size":PixelSize( *utils.MultiplyTuples(tiles["size"],tiles["number"]) )
+screen =    {   "size":PixelSize( *tuple_utils.MultiplyTuples(tiles["size"],tiles["number"]) )
             }
