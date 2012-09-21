@@ -47,6 +47,6 @@ class Map(object):
                 tile_image = self.required_images[tilekey]
                 self.levelImage.paste( tile_image, tile_pos )
         self.levelSurface = pygame.image.frombuffer( self.levelImage.tostring(), self.levelImage.size, self.levelImage.mode )
-        self.levelRect = self.levelSurface.get_rect()
-        self.levelRect.topleft = utils.PlayerPosToCamera(self.start_pos)
+        self.rect = self.levelSurface.get_rect()
+        self.rect.topleft = utils.PlayerPosToCamera(self.start_pos)
  

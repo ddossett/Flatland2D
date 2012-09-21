@@ -8,6 +8,7 @@ import config.levels as cfgLevels
 import classes.gamescreen as gamescreen
 import classes.gamemap as gamemap
 import classes.player as player
+import classes.npc as npc
 
 class GameState(object):
     def __init__(self):
@@ -28,8 +29,11 @@ tilemap.levelmap = cfgLevels.level2
 tilemap.MakeBackgroundSurface()
 
 hero = player.Player(tilemap)
+npcSprite = npc.NPC(tilemap,(15.,15.))
+npcGroup = npc.NPCGroup()
+npcGroup.add(npcSprite)
 
-screen = gamescreen.GameScreen(hero, tilemap)
+screen = gamescreen.GameScreen(hero, npcGroup, tilemap)
 
 gamestate = GameState()
 
@@ -46,6 +50,7 @@ def Moving(screen,hero):
     global clock
     global input_time
     global game_time
+    global npcGroup
     MOVING = True
     while MOVING:
         milliseconds = clock.tick(cfg.timing["fps"])
@@ -55,6 +60,7 @@ def Moving(screen,hero):
             game_time = 0
             fps = clock.get_fps()
             hero.update()
+            npcGroup.update()
             screen.Move()
             screen.update(fps)
             if hero.current_pos==hero.target_pos: MOVING = False
@@ -67,6 +73,7 @@ def Rotating(screen,hero):
     global clock
     global input_time
     global game_time
+    global npcGroup
     ROTATING = True
     while ROTATING:
         milliseconds = clock.tick(cfg.timing["fps"])
@@ -76,6 +83,7 @@ def Rotating(screen,hero):
             game_time = 0
             fps = clock.get_fps()
             hero.update()
+            npcGroup.update()
             screen.update(fps)
             if hero.current_angle==hero.target_angle: ROTATING = False
     pygame.event.get()
@@ -96,6 +104,7 @@ def main():
     global clock
     global input_time
     global game_time
+    global npcGroup
     MAINGAME = True
     pressed_keys = []
     fps = 0
@@ -130,6 +139,7 @@ def main():
                 else: continue
     
             if gamestate.state=="stationary":
+                npcGroup.update()
                 screen.update(fps)
             elif gamestate.state=="moving":
                 Moving(screen,hero)
