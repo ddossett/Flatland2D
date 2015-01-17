@@ -7,7 +7,7 @@ import utils
 class GameScreen(object):
     def __init__(self,player,level):
         self.screen = pygame.display.set_mode(cfg.SCREENSIZE,pygame.NOFRAME)
-        print cfg.SCREENSIZE
+        print(cfg.SCREENSIZE)
         pygame.display.set_caption(cfg.TITLE)
         self.player = player
         self.level = level

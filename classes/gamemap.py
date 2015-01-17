@@ -1,5 +1,5 @@
 import os
-import Image
+import PIL.Image as Image
 import pygame
 import config.main as cfg
 import config.tiles as cfgTiles
@@ -27,7 +27,7 @@ class Map(object):
             all_images[tilekey] = tile_image
         for tilekey_row in self.levelmap:
             for tilekey in tilekey_row:
-                if not self.required_images.has_key(tilekey):
+                if not tilekey in self.required_images:
                     self.required_images[tilekey] = all_images[tilekey]
 
     def MakeBackgroundSurface(self):

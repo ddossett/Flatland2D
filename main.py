@@ -144,7 +144,7 @@ def main():
                 Paused()
                 gamestate.ChangeState(gamestate.prev_state)
             else:
-                print "Entered an unknown state"
+                print("Entered an unknown state")
                 MAINGAME = False
     pygame.quit()
 
